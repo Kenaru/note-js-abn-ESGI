@@ -62,6 +62,7 @@ export function useNotes() {
           title: title,
           content: content,
           lastupdateAt: new Date(),
+          pinned: false, // Par défaut, une nouvelle note n'est pas épinglée
         }),
       });
       if (!response.ok) {
@@ -123,6 +124,40 @@ export function useNotes() {
     }
   };
 
+  const handlePinNote = async () => {
+    setLoading(true);
+    try {
+      const updatedNote = {
+        ...selectedNote,
+        pinned: !selectedNote.pinned,
+      };
+
+      const response = await fetch(`/notes/${selectedNote.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedNote),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'épinglage de la note.");
+      }
+
+      const updatedNoteFromServer = await response.json();
+      setNotes(
+        notes.map((note) =>
+          note.id === selectedNote.id ? updatedNoteFromServer : note
+        )
+      );
+      setSelectedNote(updatedNoteFromServer);
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  };
+
   return {
     notes,
     loading,
@@ -133,5 +168,6 @@ export function useNotes() {
     handleNoteClick,
     handleUpdateNote,
     handleDeleteNote,
+    handlePinNote,
   };
 }

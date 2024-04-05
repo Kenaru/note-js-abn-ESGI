@@ -64,6 +64,7 @@ function App() {
                 handleDeleteNote={handleDeleteNote}
                 handleShowAllNotes={handleShowAllNotes}
                 showAllNotes={showAllNotes}
+                handlePinNote={handlePinNote}
               />
             )}
           </>

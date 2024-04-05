@@ -7,6 +7,7 @@ function NoteEditor({
   handleDeleteNote,
   handleShowAllNotes,
   showAllNotes,
+  handlePinNote,
 }) {
   const [updatedTitle, setUpdatedTitle] = React.useState(selectedNote.title);
   const [updatedContent, setUpdatedContent] = React.useState(
@@ -59,6 +60,14 @@ function NoteEditor({
     }
   };
 
+  const handlePinButtonClick = async () => {
+    try {
+      await handlePinNote();
+    } catch (error) {
+      console.error("Erreur lors de l'épinglage de la note :", error.message);
+    }
+  };
+
   useDebouncedEffect(
     () => {
       if (isModified) {
@@ -84,6 +93,9 @@ function NoteEditor({
             Retour
           </button>
         )}
+        <button onClick={handlePinButtonClick} className="pin-button">
+          {selectedNote.pinned ? "Désépingler" : "Épingler"}
+        </button>
       </div>
       <textarea
         value={updatedContent}

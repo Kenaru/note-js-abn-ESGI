@@ -28,7 +28,11 @@ function NotesContainer({ notes, handleNoteClick }) {
   };
 
   const sortedNotes = filteredNotes.sort((a, b) => {
-    return new Date(b.lastupdateAt) - new Date(a.lastupdateAt);
+    if (a.pinned !== b.pinned) {
+      return a.pinned ? -1 : 1;
+    } else {
+      return new Date(b.lastupdateAt) - new Date(a.lastupdateAt);
+    }
   });
 
   return (
