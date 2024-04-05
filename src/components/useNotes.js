@@ -18,8 +18,15 @@ export function useNotes() {
   }, []);
 
   const handleNoteClick = (note) => {
-    setSelectedNote(note);
-    setShowAllNotes(false);
+    if (selectedNote) {
+      setSelectedNote(null);
+      setTimeout(() => {
+        setSelectedNote(note);
+      }, 15);
+    } else {
+      setSelectedNote(note);
+      setShowAllNotes(false);
+    }
   };
 
   const handleShowAllNotes = () => {
@@ -42,8 +49,8 @@ export function useNotes() {
     });
     const newNote = await response.json();
     setNotes([newNote, ...notes]);
-    setSelectedNote(newNote); // Sélectionne automatiquement la nouvelle note créée
-    setShowAllNotes(false); // Affiche la nouvelle note créée
+    setSelectedNote(newNote);
+    setShowAllNotes(false);
     setLoading(false);
   };
 

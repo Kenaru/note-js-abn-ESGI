@@ -11,16 +11,16 @@ function NoteEditor({
   const [updatedContent, setUpdatedContent] = React.useState(
     selectedNote.content
   );
-  const [isModified, setIsModified] = React.useState(false); // Variable d'état pour suivre les modifications
+  const [isModified, setIsModified] = React.useState(false);
 
   const handleTitleChange = (event) => {
     setUpdatedTitle(event.target.value);
-    setIsModified(true); // Marquer comme modifié lorsqu'il y a un changement de titre
+    setIsModified(true);
   };
 
   const handleContentChange = (event) => {
     setUpdatedContent(event.target.value);
-    setIsModified(true); // Marquer comme modifié lorsqu'il y a un changement de contenu
+    setIsModified(true);
   };
 
   const handleSaveClick = () => {
@@ -29,7 +29,7 @@ function NoteEditor({
       title: updatedTitle,
       content: updatedContent,
     });
-    setIsModified(false); // Réinitialiser l'état des modifications après l'enregistrement
+    setIsModified(false);
   };
 
   return (

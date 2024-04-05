@@ -74,7 +74,7 @@
 }
 
 .selected-note {
-  position: absolute; /* Changement de la position à absolute */
+  position: absolute; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -84,7 +84,7 @@
   border: 1px solid #ddd;
   color: #000000;
   border-radius: 5px;
-  z-index: 999; /* Augmentation du z-index */
+  z-index: 999; 
 }
 
 
@@ -138,8 +138,8 @@
 
 .selected-note-header {
   display: flex;
-  justify-content: space-between; /* Pour placer les éléments à l'extrémité des conteneurs */
-  align-items: center; /* Pour aligner les éléments verticalement */
+  justify-content: space-between; 
+  align-items: center; 
 }
 
 .comeback {
@@ -168,6 +168,15 @@
   margin-top: 10px;
   cursor: pointer;
   border-radius: 8px;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .delete-button{
