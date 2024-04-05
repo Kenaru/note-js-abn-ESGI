@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "../App.css";
 
-function NotesContainer({ notes, handleNoteClick }) {
+function NotesContainer({
+  notes,
+  handleNoteClick,
+  handleToggleNoteCompletion,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const escapeRegExp = (text) => {
@@ -47,7 +51,7 @@ function NotesContainer({ notes, handleNoteClick }) {
       {sortedNotes.map((note) => (
         <div
           key={note.id}
-          className="note"
+          className={`note ${note.completed ? "completed" : ""}`}
           onClick={() => handleNoteClick(note)}
         >
           <div
@@ -71,8 +75,12 @@ function NotesContainer({ notes, handleNoteClick }) {
               minute: "numeric",
             })}
           </div>
-          {note.pinned && <i className="material-icons">push_pin</i>}{" "}
-          {/* Icône pour indiquer que la note est épinglée */}
+          {note.pinned && <i className="material-icons">push_pin</i>}
+          <input
+            type="checkbox"
+            checked={note.completed}
+            onChange={() => handleToggleNoteCompletion(note.id)}
+          />
         </div>
       ))}
     </div>

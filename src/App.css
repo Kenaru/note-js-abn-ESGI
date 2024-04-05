@@ -44,6 +44,11 @@
   opacity: 0.8;
 }
 
+.note.completed {
+  text-decoration: line-through; 
+  opacity: 0.5; 
+}
+
 
 .notes-container {
   flex: 1;
@@ -266,15 +271,15 @@
   align-items: center;
 }
 
-.pin-button{
-  background-color: #29f116; 
+.pin-button {
+  background-color: #29f116;
   border: none;
   color: white;
-  padding: 10px; 
+  padding: 10px;
   text-align: center;
   text-decoration: none;
-  font-size: 60%;
+  font-size: 50%;
   cursor: pointer;
   border-radius: 8px;
-  width: 10%;
+  width: fit-content; 
 }

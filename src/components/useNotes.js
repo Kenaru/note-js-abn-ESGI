@@ -63,6 +63,7 @@ export function useNotes() {
           content: content,
           lastupdateAt: new Date(),
           pinned: false, // Par défaut, une nouvelle note n'est pas épinglée
+          completed: false, // Par défaut, une nouvelle note n'est pas complétée
         }),
       });
       if (!response.ok) {
@@ -158,6 +159,38 @@ export function useNotes() {
     }
   };
 
+  const handleToggleNoteCompletion = async (noteId) => {
+    setLoading(true);
+    try {
+      const updatedNote = {
+        ...notes.find((note) => note.id === noteId),
+        completed: !notes.find((note) => note.id === noteId).completed,
+      };
+
+      const response = await fetch(`/notes/${noteId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedNote),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors du basculement de l'état de la note.");
+      }
+
+      const updatedNoteFromServer = await response.json();
+      setNotes(
+        notes.map((note) => (note.id === noteId ? updatedNoteFromServer : note))
+      );
+      setSelectedNote(updatedNoteFromServer);
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoading(false);
+    }
+  };
+
   return {
     notes,
     loading,
@@ -169,5 +202,6 @@ export function useNotes() {
     handleUpdateNote,
     handleDeleteNote,
     handlePinNote,
+    handleToggleNoteCompletion,
   };
 }
