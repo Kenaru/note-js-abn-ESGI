@@ -71,6 +71,8 @@ function NotesContainer({ notes, handleNoteClick }) {
               minute: "numeric",
             })}
           </div>
+          {note.pinned && <i className="material-icons">push_pin</i>}{" "}
+          {/* Icône pour indiquer que la note est épinglée */}
         </div>
       ))}
     </div>
