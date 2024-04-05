@@ -12,6 +12,7 @@ function NoteEditor({
     selectedNote.content
   );
   const [isModified, setIsModified] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleTitleChange = (event) => {
     setUpdatedTitle(event.target.value);
@@ -23,21 +24,44 @@ function NoteEditor({
     setIsModified(true);
   };
 
-  const handleSaveClick = () => {
-    handleUpdateNote({
-      ...selectedNote,
-      title: updatedTitle,
-      content: updatedContent,
-    });
-    setIsModified(false);
+  const handleSaveClick = async () => {
+    try {
+      await handleUpdateNote({
+        ...selectedNote,
+        title: updatedTitle,
+        content: updatedContent,
+      });
+      setIsModified(false);
+      setErrorMessage("");
+    } catch (error) {
+      console.error(
+        "Erreur lors de la mise à jour de la note :",
+        error.message
+      );
+      setErrorMessage("Erreur lors de la mise à jour de la note.");
+    }
+  };
+
+  const handleDeleteButtonClick = async () => {
+    try {
+      await handleDeleteNote(selectedNote.id);
+      setErrorMessage("");
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression de la note :",
+        error.message
+      );
+      setErrorMessage("Erreur lors de la suppression de la note.");
+    }
   };
 
   return (
     <div className="selected-note">
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="selected-note-header">
         <input
           type="textarea"
-          className="slected-title"
+          className="selected-title"
           value={updatedTitle}
           onChange={handleTitleChange}
         />
@@ -58,10 +82,7 @@ function NoteEditor({
             Enregistrer
           </button>
         )}
-        <button
-          className="delete-button"
-          onClick={() => handleDeleteNote(selectedNote.id)}
-        >
+        <button className="delete-button" onClick={handleDeleteButtonClick}>
           Supprimer
         </button>
       </div>

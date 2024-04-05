@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import "../App.css";
+
 function NotesContainer({ notes, handleNoteClick }) {
   const [searchTerm, setSearchTerm] = useState("");
+
+  const highlightText = (text) => {
+    if (!searchTerm.trim()) return text;
+    const regex = new RegExp(`(${searchTerm})`, "gi");
+    return text.replace(regex, "<span class='highlight'>$1</span>");
+  };
 
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       note.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const sliceText = (text) => {
+    const maxLength = 15;
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength)}...`;
+  };
 
   return (
     <div className="notes-container">
@@ -24,16 +37,18 @@ function NotesContainer({ notes, handleNoteClick }) {
           className="note"
           onClick={() => handleNoteClick(note)}
         >
-          <div className="title">
-            {note.title.length > 15
-              ? `${note.title.slice(0, 15)}...`
-              : note.title}
-          </div>
-          <div className="preview">
-            {note.content.length > 15
-              ? `${note.content.slice(0, 15)}...`
-              : note.content}
-          </div>
+          <div
+            className="title"
+            dangerouslySetInnerHTML={{
+              __html: highlightText(sliceText(note.title)),
+            }}
+          ></div>
+          <div
+            className="preview"
+            dangerouslySetInnerHTML={{
+              __html: highlightText(sliceText(note.content)),
+            }}
+          ></div>
         </div>
       ))}
     </div>

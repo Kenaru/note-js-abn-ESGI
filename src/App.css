@@ -73,6 +73,30 @@
   border: none;
 }
 
+.highlight {
+  background-color: #6bff93;
+  border: none;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.error-message {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.success-message {
+  background-color: #6bff93;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+
 .selected-note {
   position: absolute; 
   top: 50%;

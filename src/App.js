@@ -4,6 +4,8 @@ import NotesContainer from "./components/NotesContainer";
 import NoteEditor from "./components/NoteEditor";
 import Loader from "./components/Loader";
 import { useNotes } from "./components/useNotes";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const {
@@ -22,6 +24,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Notes :</h1>
+        <ToastContainer position="bottom-right" />
         {loading ? (
           <Loader />
         ) : (
