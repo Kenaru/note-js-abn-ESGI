@@ -1,4 +1,5 @@
 import React from "react";
+import { useDebouncedEffect } from "./useDebouncedEffect";
 
 function NoteEditor({
   selectedNote,
@@ -26,11 +27,14 @@ function NoteEditor({
 
   const handleSaveClick = async () => {
     try {
-      await handleUpdateNote({
+      const updatedNote = {
         ...selectedNote,
         title: updatedTitle,
         content: updatedContent,
-      });
+        lastupdateAt: new Date().toISOString(),
+      };
+
+      await handleUpdateNote(updatedNote);
       setIsModified(false);
       setErrorMessage("");
     } catch (error) {
@@ -54,6 +58,16 @@ function NoteEditor({
       setErrorMessage("Erreur lors de la suppression de la note.");
     }
   };
+
+  useDebouncedEffect(
+    () => {
+      if (isModified) {
+        handleSaveClick();
+      }
+    },
+    [updatedTitle, updatedContent],
+    20_000
+  );
 
   return (
     <div className="selected-note">

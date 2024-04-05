@@ -4,9 +4,14 @@ import "../App.css";
 function NotesContainer({ notes, handleNoteClick }) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const escapeRegExp = (text) => {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  };
+
   const highlightText = (text) => {
     if (!searchTerm.trim()) return text;
-    const regex = new RegExp(`(${searchTerm})`, "gi");
+    const escapedTerm = escapeRegExp(searchTerm);
+    const regex = new RegExp(`(${escapedTerm})`, "gi");
     return text.replace(regex, "<span class='highlight'>$1</span>");
   };
 
@@ -22,6 +27,10 @@ function NotesContainer({ notes, handleNoteClick }) {
     return `${text.slice(0, maxLength)}...`;
   };
 
+  const sortedNotes = filteredNotes.sort((a, b) => {
+    return new Date(b.lastupdateAt) - new Date(a.lastupdateAt);
+  });
+
   return (
     <div className="notes-container">
       <input
@@ -31,7 +40,7 @@ function NotesContainer({ notes, handleNoteClick }) {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {filteredNotes.map((note) => (
+      {sortedNotes.map((note) => (
         <div
           key={note.id}
           className="note"
@@ -49,6 +58,15 @@ function NotesContainer({ notes, handleNoteClick }) {
               __html: highlightText(sliceText(note.content)),
             }}
           ></div>
+          <div className="last-update">
+            {new Date(note.lastupdateAt).toLocaleString(undefined, {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+            })}
+          </div>
         </div>
       ))}
     </div>

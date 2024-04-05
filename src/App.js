@@ -18,6 +18,7 @@ function App() {
     handleNoteClick,
     handleUpdateNote,
     handleDeleteNote,
+    handlePinNote,
   } = useNotes();
 
   return (
@@ -54,6 +55,7 @@ function App() {
               showAllNotes={showAllNotes}
               handleNoteClick={handleNoteClick}
               handleShowAllNotes={handleShowAllNotes}
+              handlePinNote={handlePinNote}
             />
             {selectedNote && (
               <NoteEditor
