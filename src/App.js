@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import NotesContainer from "./components/NotesContainer";
 import NoteEditor from "./components/NoteEditor";
@@ -21,10 +21,25 @@ function App() {
     handlePinNote,
   } = useNotes();
 
+  const [isDarkMode, setIsDarkMode] = useState(true); // État pour le mode jour/nuit
+
+  // Fonction pour basculer entre le mode jour et nuit
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
-    <div className="App">
+    <div className={`App ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <header className="App-header">
         <h1>Notes :</h1>
+        <button
+          onClick={toggleDarkMode}
+          className={`mode-toggle-button ${
+            isDarkMode ? "dark-mode" : "light-mode"
+          }`}
+        >
+          {isDarkMode ? "Light Mode" : "Dark Mode"}
+        </button>
         <ToastContainer position="bottom-right" />
         {loading ? (
           <Loader />
