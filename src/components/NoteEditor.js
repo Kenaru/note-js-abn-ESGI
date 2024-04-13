@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDebouncedEffect } from "./useDebouncedEffect";
+import ConfirmationModal from "./ConfirmationModal"; // Import du composant de modal de confirmation
 
 function NoteEditor({
   selectedNote,
@@ -9,12 +10,11 @@ function NoteEditor({
   showAllNotes,
   handlePinNote,
 }) {
-  const [updatedTitle, setUpdatedTitle] = React.useState(selectedNote.title);
-  const [updatedContent, setUpdatedContent] = React.useState(
-    selectedNote.content
-  );
-  const [isModified, setIsModified] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [updatedTitle, setUpdatedTitle] = useState(selectedNote.title);
+  const [updatedContent, setUpdatedContent] = useState(selectedNote.content);
+  const [isModified, setIsModified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false); // État pour gérer la visibilité de la modal de confirmation
 
   const handleTitleChange = (event) => {
     setUpdatedTitle(event.target.value);
@@ -48,16 +48,8 @@ function NoteEditor({
   };
 
   const handleDeleteButtonClick = async () => {
-    try {
-      await handleDeleteNote(selectedNote.id);
-      setErrorMessage("");
-    } catch (error) {
-      console.error(
-        "Erreur lors de la suppression de la note :",
-        error.message
-      );
-      setErrorMessage("Erreur lors de la suppression de la note.");
-    }
+    // Afficher la modal de confirmation
+    setShowConfirmationModal(true);
   };
 
   const handlePinButtonClick = async () => {
@@ -112,6 +104,26 @@ function NoteEditor({
           Supprimer
         </button>
       </div>
+      {/* Modal de confirmation */}
+      <ConfirmationModal
+        isOpen={showConfirmationModal}
+        onCancel={() => setShowConfirmationModal(false)}
+        onConfirm={async () => {
+          try {
+            await handleDeleteNote(selectedNote.id);
+            setShowConfirmationModal(false); // Cacher la modal de confirmation après suppression
+            setErrorMessage("");
+          } catch (error) {
+            console.error(
+              "Erreur lors de la suppression de la note :",
+              error.message
+            );
+            setErrorMessage("Erreur lors de la suppression de la note.");
+          }
+        }}
+      >
+        Êtes-vous sûr de vouloir supprimer cette note ?
+      </ConfirmationModal>
     </div>
   );
 }
