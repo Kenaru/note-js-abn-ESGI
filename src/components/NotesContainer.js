@@ -40,6 +40,7 @@ function NotesContainer({
   });
 
   return (
+    // Crée un overlay ICI !!!!!
     <div className="notes-container">
       <input
         type="text"

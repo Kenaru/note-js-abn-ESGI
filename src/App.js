@@ -19,12 +19,11 @@ function App() {
     handleUpdateNote,
     handleDeleteNote,
     handlePinNote,
-    handleToggleNoteCompletion, // Ajoutez cette ligne pour inclure handleToggleNoteCompletion
+    handleToggleNoteCompletion,
   } = useNotes();
 
-  const [isDarkMode, setIsDarkMode] = useState(true); // État pour le mode jour/nuit
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Fonction pour basculer entre le mode jour et nuit
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -72,7 +71,7 @@ function App() {
               handleNoteClick={handleNoteClick}
               handleShowAllNotes={handleShowAllNotes}
               handlePinNote={handlePinNote}
-              handleToggleNoteCompletion={handleToggleNoteCompletion} // Passer la fonction à NotesContainer
+              handleToggleNoteCompletion={handleToggleNoteCompletion}
             />
             {selectedNote && (
               <NoteEditor
