@@ -40,7 +40,6 @@ function NotesContainer({
   });
 
   return (
-    // Crée un overlay ICI !!!!!
     <div className="notes-container">
       <input
         type="text"
@@ -55,18 +54,13 @@ function NotesContainer({
           className={`note ${note.completed ? "completed" : ""}`}
           onClick={() => handleNoteClick(note)}
         >
-          <div
-            className="title"
-            dangerouslySetInnerHTML={{
-              __html: highlightText(sliceText(note.title)),
-            }}
-          ></div>
-          <div
-            className="preview"
-            dangerouslySetInnerHTML={{
-              __html: highlightText(sliceText(note.content)),
-            }}
-          ></div>
+          <div className="title">
+            <span dangerouslySetInnerHTML={{ __html: highlightText(sliceText(note.title)) }}></span>
+            {note.labels && note.labels.map((label, index) => (
+              <span key={index} className="label">{label}</span>
+            ))}
+          </div>
+          <div className="preview" dangerouslySetInnerHTML={{ __html: highlightText(sliceText(note.content)) }}></div>
           <div className="last-update">
             {new Date(note.lastupdateAt).toLocaleString(undefined, {
               year: "numeric",

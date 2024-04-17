@@ -1,6 +1,8 @@
+//useNotes.js
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { fetchData } from "./apiUtils";
 
 export function useNotes() {
   const [notes, setNotes] = useState([]);
@@ -14,15 +16,10 @@ export function useNotes() {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch("/notes");
-      if (!response.ok) {
-        throw new Error("Erreur lors du chargement des notes.");
-      }
-      const data = await response.json();
+      const data = await fetchData("/notes"); // Utilisation de fetchData
       setNotes(data);
       setLoading(false);
     } catch (error) {
-      toast.error(error.message);
       setLoading(false);
     }
   };

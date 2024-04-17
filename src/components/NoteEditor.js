@@ -1,3 +1,4 @@
+//NoteEditor.js
 import React, { useState } from "react";
 import { useDebouncedEffect } from "./useDebouncedEffect";
 import ConfirmationModal from "./ConfirmationModal"; // Import du composant de modal de confirmation

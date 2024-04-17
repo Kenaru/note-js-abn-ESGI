@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+//App.js
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import NotesContainer from "./components/NotesContainer";
 import NoteEditor from "./components/NoteEditor";
@@ -6,6 +7,7 @@ import Loader from "./components/Loader";
 import { useNotes } from "./components/useNotes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { fetchData } from "./components/apiUtils"; 
 
 function App() {
   const {
@@ -23,15 +25,31 @@ function App() {
   } = useNotes();
 
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [userName, setUserName] = useState("") // State to store user's name
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  useEffect(() => {
+      fetchUserProfile();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const profileData = await fetchData("/profile"); // Utilisation de fetchData
+      console.log("User profile data:", profileData);
+      setUserName(profileData.name); // Set user's name to state
+    } catch (error) {
+      console.error("Error fetching user profile:", error.message);
+    }
   };
 
   return (
     <div className={`App ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <header className="App-header">
         <h1>Notes :</h1>
+        <div className="status-bar">User: {userName}</div> {/* Display user's name */}
         <button
           onClick={toggleDarkMode}
           className={`mode-toggle-button ${
