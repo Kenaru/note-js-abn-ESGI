@@ -1,22 +1,25 @@
-//useNotes.js
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchData } from "./apiUtils";
 
+// Hook personnalisé pour gérer les notes
 export function useNotes() {
+  // États pour stocker les données des notes et leur gestion
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [showAllNotes, setShowAllNotes] = useState(true);
   const [loading, setLoading] = useState(true);
 
+  // Effet pour charger les notes au montage du composant
   useEffect(() => {
     fetchNotes();
   }, []);
 
+  // Fonction pour récupérer les notes depuis le serveur
   const fetchNotes = async () => {
     try {
-      const data = await fetchData("/notes"); // Utilisation de fetchData
+      const data = await fetchData("/notes");
       setNotes(data);
       setLoading(false);
     } catch (error) {
@@ -24,6 +27,7 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour gérer le clic sur une note
   const handleNoteClick = async (note) => {
     try {
       if (selectedNote) {
@@ -42,11 +46,13 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour afficher toutes les notes
   const handleShowAllNotes = () => {
     setShowAllNotes(true);
     setSelectedNote(null);
   };
 
+  // Fonction pour créer une nouvelle note
   const handleCreateNewNote = async (title, content) => {
     setLoading(true);
     try {
@@ -59,8 +65,8 @@ export function useNotes() {
           title: title,
           content: content,
           lastupdateAt: new Date(),
-          pinned: false, // Par défaut, une nouvelle note n'est pas épinglée
-          completed: false, // Par défaut, une nouvelle note n'est pas complétée
+          pinned: false,
+          completed: false,
         }),
       });
       if (!response.ok) {
@@ -78,6 +84,7 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour mettre à jour une note
   const handleUpdateNote = async (updatedNote) => {
     setLoading(true);
     try {
@@ -106,6 +113,7 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour supprimer une note
   const handleDeleteNote = async (id) => {
     setLoading(true);
     try {
@@ -122,6 +130,7 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour épingler/désépingler une note
   const handlePinNote = async () => {
     setLoading(true);
     try {
@@ -156,6 +165,7 @@ export function useNotes() {
     }
   };
 
+  // Fonction pour basculer l'état de complétion d'une note
   const handleToggleNoteCompletion = async (noteId) => {
     setLoading(true);
     try {
@@ -188,6 +198,7 @@ export function useNotes() {
     }
   };
 
+  // Retourner les fonctions et les données nécessaires pour gérer les notes
   return {
     notes,
     loading,

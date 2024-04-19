@@ -1,4 +1,3 @@
-//App.js
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import NotesContainer from "./components/NotesContainer";
@@ -7,9 +6,11 @@ import Loader from "./components/Loader";
 import { useNotes } from "./components/useNotes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchData } from "./components/apiUtils"; 
+import { fetchData } from "./components/apiUtils";
 
+// Fonction principale de l'application
 function App() {
+  // Utilisation du hook custom 'useNotes' pour gérer les notes
   const {
     notes,
     loading,
@@ -24,32 +25,39 @@ function App() {
     handleToggleNoteCompletion,
   } = useNotes();
 
+  // Utilisation du hook 'useState' pour gérer le mode sombre
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [userName, setUserName] = useState("") // State to store user's name
+  // Utilisation du hook 'useState' pour gérer le nom de l'utilisateur
+  const [userName, setUserName] = useState("");
 
+  // Fonction pour basculer entre le mode sombre et le mode clair
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  // Effet de chargement initial pour récupérer le profil de l'utilisateur
   useEffect(() => {
-      fetchUserProfile();
+    fetchUserProfile();
   }, []);
 
+  // Fonction asynchrone pour récupérer le profil de l'utilisateur
   const fetchUserProfile = async () => {
     try {
-      const profileData = await fetchData("/profile"); // Utilisation de fetchData
+      const profileData = await fetchData("/profile");
       console.log("User profile data:", profileData);
-      setUserName(profileData.name); // Set user's name to state
+      setUserName(profileData.name);
     } catch (error) {
       console.error("Error fetching user profile:", error.message);
     }
   };
 
+  // Rendu de l'application
   return (
     <div className={`App ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <header className="App-header">
         <h1>Notes :</h1>
-        <div className="status-bar">User: {userName}</div> {/* Display user's name */}
+        <div className="status-bar">User: {userName}</div>{" "}
+        {/* Affichage du nom de l'utilisateur */}
         <button
           onClick={toggleDarkMode}
           className={`mode-toggle-button ${
@@ -64,6 +72,7 @@ function App() {
         ) : (
           <>
             <div className="form-container">
+              {/* Formulaire pour créer une nouvelle note */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -83,6 +92,7 @@ function App() {
                 <button type="submit">Créer une note</button>
               </form>
             </div>
+            {/* Affichage des notes */}
             <NotesContainer
               notes={notes}
               showAllNotes={showAllNotes}
@@ -91,6 +101,7 @@ function App() {
               handlePinNote={handlePinNote}
               handleToggleNoteCompletion={handleToggleNoteCompletion}
             />
+            {/* Éditeur de note (si une note est sélectionnée) */}
             {selectedNote && (
               <NoteEditor
                 selectedNote={selectedNote}
